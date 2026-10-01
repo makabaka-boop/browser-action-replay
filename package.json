@@ -1,0 +1,13 @@
+{
+  "name": "walkthrough-recorder",
+  "version": "1.0.0",
+  "private": true,
+  "description": "内置演练页（表单/标签页/弹窗）与只针对该页工作的交互录制器",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "jsdom": "^29.1.1"
+  }
+}

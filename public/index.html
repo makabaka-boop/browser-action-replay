@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>内置演练页 · 表单 / 标签页 / 弹窗</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<!-- 录制器只在带此标记的页面挂载 -->
+<div id="wt-app-root" data-walkthrough-page="profile-demo">
+  <header class="wt-header">
+    <h1>内置演练页</h1>
+    <p class="wt-sub">包含表单、标签页、可重建弹窗与滚动区域，供交互录制器使用。</p>
+  </header>
+
+  <nav class="wt-tabs" role="tablist" aria-label="演练分区">
+    <button type="button" id="wt-tab-profile" class="wt-tab" role="tab" aria-selected="true">个人资料</button>
+    <button type="button" id="wt-tab-prefs" class="wt-tab" role="tab" aria-selected="false">偏好设置</button>
+    <button type="button" id="wt-tab-activity" class="wt-tab" role="tab" aria-selected="false">活动日志</button>
+  </nav>
+
+  <!-- 标签页 1：表单 -->
+  <section id="wt-panel-profile" class="wt-panel" role="tabpanel">
+    <form id="wt-profile-form" novalidate>
+      <div class="wt-field">
+        <label for="wt-name-input">姓名</label>
+        <input type="text" id="wt-name-input" name="name" autocomplete="off" />
+      </div>
+      <div class="wt-field">
+        <label for="wt-email-input">邮箱</label>
+        <input type="email" id="wt-email-input" name="email" autocomplete="off" />
+      </div>
+      <div class="wt-field">
+        <label for="wt-password-input">密码</label>
+        <input type="password" id="wt-password-input" name="password" autocomplete="new-password" />
+        <small class="wt-hint">录制器只记录“是否已改变”，不保存任何字符。</small>
+      </div>
+      <div class="wt-field">
+        <label for="wt-bio-input">简介</label>
+        <textarea id="wt-bio-input" name="bio" rows="3"></textarea>
+      </div>
+      <button type="submit" id="wt-save-profile" class="wt-btn wt-btn-primary">保存资料</button>
+      <p id="wt-profile-status" class="wt-status" data-snapshot-text>（未保存）</p>
+    </form>
+  </section>
+
+  <!-- 标签页 2：偏好 + 弹窗入口 -->
+  <section id="wt-panel-prefs" class="wt-panel wt-hidden" role="tabpanel">
+    <div class="wt-field">
+      <label for="wt-theme-select">主题</label>
+      <select id="wt-theme-select">
+        <option value="light">浅色</option>
+        <option value="dark">深色</option>
+        <option value="auto">跟随系统</option>
+      </select>
+    </div>
+    <div class="wt-field">
+      <label><input type="checkbox" id="wt-notify-check" /> 接收邮件通知</label>
+    </div>
+    <div class="wt-field" role="radiogroup" aria-label="角色">
+      <label><input type="radio" name="role" id="wt-role-user" value="user" checked /> 普通用户</label>
+      <label><input type="radio" name="role" id="wt-role-admin" value="admin" /> 管理员</label>
+    </div>
+    <button type="button" id="wt-open-modal-btn" class="wt-btn">打开弹窗</button>
+    <p class="wt-hint">弹窗每次打开都会整体重建内部 DOM（ID 保持不变），用于验证稳定目标定位。</p>
+  </section>
+
+  <!-- 标签页 3：滚动区 -->
+  <section id="wt-panel-activity" class="wt-panel wt-hidden" role="tabpanel">
+    <button type="button" id="wt-add-log-btn" class="wt-btn">追加一条日志</button>
+    <div id="wt-log-scroll" class="wt-scroll-area" data-snapshot-scroll>
+      <ul id="wt-log-list"></ul>
+    </div>
+  </section>
+
+  <!-- 弹窗：覆盖层常驻，卡片每次打开重建 -->
+  <div id="wt-modal-overlay" class="wt-overlay wt-hidden" data-modal-overlay data-modal-version="0">
+    <div id="wt-modal-card" class="wt-modal-card" role="dialog" aria-modal="true">
+      <h2>确认操作</h2>
+      <p class="wt-hint">重建版本：v0</p>
+      <div class="wt-field">
+        <label for="wt-modal-note">备注</label>
+        <input type="text" id="wt-modal-note" autocomplete="off" />
+      </div>
+      <p id="wt-modal-status" class="wt-status" data-snapshot-text>填写备注后确认</p>
+      <div class="wt-modal-actions">
+        <button type="button" id="wt-modal-cancel" data-modal-close>取消</button>
+        <button type="button" id="wt-modal-confirm" data-modal-confirm class="wt-btn wt-btn-primary">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="wt-footer">
+    <span>异步回写状态：</span>
+    <strong id="wt-async-status" data-snapshot-text>（无）</strong>
+  </footer>
+</div>
+
+<script src="app.js"></script>
+<script src="recorder.js"></script>
+</body>
+</html>
