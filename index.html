@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="walkthrough">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>内置演练：表单 / 标签页 / 弹窗 交互录制</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="page-head">
+      <h1>内置演练页面</h1>
+      <p class="hint">
+        本页内置一个只在此页面工作的交互录制器：录制<strong>点击、输入、聚焦、滚动</strong>，
+        目标一律使用稳定元素 ID；每一步都会保存执行前条件与执行后可观察状态摘要。
+        密码框只记录“是否已改变”，不保存任何字符。
+      </p>
+    </header>
+
+    <!-- ============ 标签页 ============ -->
+    <section class="card" aria-label="标签页示例">
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab" id="tab-profile" role="tab"
+                aria-selected="true" data-track>资料</button>
+        <button type="button" class="tab" id="tab-security" role="tab"
+                aria-selected="false" data-track>安全</button>
+        <button type="button" class="tab" id="tab-activities" role="tab"
+                aria-selected="false" data-track>动态</button>
+      </div>
+
+      <div class="tab-panel" id="panel-profile" role="tabpanel">
+        <!-- ============ 表单 ============ -->
+        <form id="demo-form" onsubmit="return false;">
+          <div class="field">
+            <label for="f-name">昵称</label>
+            <input type="text" id="f-name" data-track autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="f-email">邮箱</label>
+            <input type="email" id="f-email" data-track autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="f-password">密码（录制时脱敏，不保存字符）</label>
+            <input type="password" id="f-password" data-track autocomplete="new-password" />
+          </div>
+          <div class="field">
+            <label for="f-bio">简介</label>
+            <textarea id="f-bio" rows="3" data-track></textarea>
+          </div>
+          <div class="field">
+            <label for="f-country">地区</label>
+            <select id="f-country" data-track>
+              <option value="cn">中国大陆</option>
+              <option value="hk">中国香港</option>
+              <option value="sg">新加坡</option>
+              <option value="other">其他</option>
+            </select>
+          </div>
+          <label class="field inline">
+            <input type="checkbox" id="f-newsletter" data-track />
+            订阅产品更新邮件
+          </label>
+
+          <div class="btn-row">
+            <button type="button" class="btn" id="bump-btn" data-track>
+              累计点击计数：<span id="bump-count">0</span>
+            </button>
+            <button type="button" class="btn primary" id="open-modal" data-track>
+              打开弹窗
+            </button>
+            <button type="button" class="btn warn" id="async-close" data-track
+                    title="打开弹窗后可用：安排一次迟到的异步关闭">
+              安排 120ms 后异步关闭弹窗
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="tab-panel" id="panel-security" role="tabpanel" hidden>
+        <p>安全设置面板。切换到这里本身就是一次可录制的“点击”，其执行后摘要包含当前标签页。</p>
+        <p>密码输入框位于“资料”面板；录制器不会保存密码字符，只记录 <code>changed</code> 标记。</p>
+      </div>
+
+      <div class="tab-panel" id="panel-activities" role="tabpanel" hidden>
+        <p>动态面板：用于制造“执行后状态摘要分歧”——回放时若该面板被提前移除，回放会停在分歧的第一步。</p>
+      </div>
+    </section>
+
+    <!-- ============ 可滚动区域 ============ -->
+    <section class="card" aria-label="滚动示例">
+      <h2>滚动区域</h2>
+      <div id="scroll-box" class="scroll-box" data-track data-kind="scroll" tabindex="0">
+        <div id="scroll-content">
+          <!-- 由 app.js 填充足够多的内容以产生滚动 -->
+        </div>
+      </div>
+      <p class="hint">滚动位置以像素记录，滚动事件做合并处理；停止录制时未落盘的滚动会立即结算。</p>
+    </section>
+
+    <!-- ============ 弹窗根节点（打开时重建内部 DOM） ============ -->
+    <div id="modal-root" class="modal-root" data-track data-kind="modal" hidden></div>
+
+    <!-- ============ 内置录制器挂载点 ============ -->
+    <aside id="recorder-root" aria-label="交互录制器"></aside>
+  </main>
+
+  <script src="app.js"></script>
+  <script src="recorder.js"></script>
+</body>
+</html>
